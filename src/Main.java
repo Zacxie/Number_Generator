@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Main {
@@ -8,7 +9,9 @@ public class Main {
     private int end;
     private int chosen;
     private int score = 1;
-    private int bestScore=100;
+    private int bestScore = 100;
+    private int mean;
+    private ArrayList<Integer> triesList = new ArrayList<>();
 
     public static void main(String[] args) {
         Main main = new Main();
@@ -38,7 +41,6 @@ public class Main {
         if (end < start) {
             System.out.println("Start number must be bigger than end number! Have another go");
             end();
-        } else {
         }
         generator();
     }
@@ -62,6 +64,7 @@ public class Main {
     private void compare() {
         if (guess == chosen) {
             System.out.println("You guessed it!");
+            triesList.add(score);
             if (score < bestScore) {
                 bestScore = score;
             }
@@ -77,7 +80,7 @@ public class Main {
             System.out.println("Too low. Guess higher");
             score++;
             guess();
-        } else if (guess > chosen) {
+        } else {
             System.out.println("Too high. Guess lower");
             score++;
             guess();
@@ -91,12 +94,21 @@ public class Main {
 
         if (goAgain.matches("Y") || goAgain.matches("y")) {
             System.out.println("\n");
-            score=1;
+            score = 1;
             start();
         } else if (goAgain.matches("N") || goAgain.matches("n")) {
-
+            System.out.println("\n");
+            System.out.println("\n");
+            meanOfTries();
         } else {
             restart();
         }
+    }
+
+    private void meanOfTries() {
+        int sum = triesList.stream().mapToInt(Integer::intValue).sum();
+        mean = sum / triesList.size();
+        System.out.println("Your average guesses before guessing correctly is " + mean + ".");
+
     }
 }
